@@ -12,4 +12,4 @@ This is a basic Django project created for the "Introduction to Django" task in 
 
 - `LibraryProject/settings.py`: Configuration file.
 - `LibraryProject/urls.py`: URL routing.
-- `manage.py`: Command-line utility to interact with Django.
+- `manage.py`: Command-line utility to interact with Django
