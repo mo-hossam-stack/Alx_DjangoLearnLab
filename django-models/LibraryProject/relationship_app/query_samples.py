@@ -1,35 +1,23 @@
-# relationship_app/query_samples.py
-
-import os
-import django
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LibraryProject.settings')
-django.setup()
-
 from relationship_app.models import Author, Book, Library, Librarian
 
-author_name = "J.K. Rowling"
 try:
-    author = Author.objects.get(name=author_name)
-    books = Book.objects.filter(author=author)
-    print(f"\n Books by {author_name}:")
-    for book in books:
-        print(f"- {book.title}")
+    author = Author.objects.get(name='J.K. Rowling')
+    books = Book.objects.filter(authors=author)
+    print(f"Books by {author.name}: {[book.title for book in books]}")
 except Author.DoesNotExist:
-    print(f"\n Author '{author_name}' not found.")
-
-library_name = "Central Library"
+    print("Author 'J.K. Rowling' not found.")
 try:
-    library = Library.objects.get(name=library_name)
-    books = library.books.all()
-    print(f"\n Books in {library_name}:")
-    for book in books:
-        print(f"- {book.title}")
+    book = Book.objects.get(title='Harry Potter and the Philosopher\'s Stone')
+    authors = book.authors.all()
+    print(f"Authors of {book.title}: {[author.name for author in authors]}")
+except Book.DoesNotExist:
+    print("Book 'Harry Potter and the Philosopher's Stone' not found.")
+
+try:
+    library = Library.objects.get(name='Central Library')
+    librarian = Librarian.objects.get(library=library)
+    print(f"Librarian for {library.name}: {librarian.name}")
 except Library.DoesNotExist:
-    print(f"\n Library '{library_name}' not found.")
-
-try:
-    librarian = Librarian.objects.get(library__name=library_name)
-    print(f"\n👨‍💼 Librarian of {library_name}: {librarian.name}")
+    print("Library 'Central Library' not found.")
 except Librarian.DoesNotExist:
-    print(f"\n No librarian assigned to {library_name}.")
+    print("No librarian assigned to Central Library.")
