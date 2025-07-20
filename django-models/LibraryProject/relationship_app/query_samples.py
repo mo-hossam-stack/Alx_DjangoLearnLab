@@ -2,7 +2,7 @@ from relationship_app.models import Author, Book, Library, Librarian
 
 try:
     author = Author.objects.get(name='J.K. Rowling')
-    books_by_author = Book.objects.filter(authors=author)
+    books_by_author = Book.objects.filter(authors=author) 
     print(f"Books by {author.name}: {[book.title for book in books_by_author]}")
 except Author.DoesNotExist:
     print("Author 'J.K. Rowling' not found.")
@@ -23,10 +23,9 @@ except Library.DoesNotExist:
 except Librarian.DoesNotExist:
     print("No librarian assigned to Central Library.")
 
-# List all books in a library
 try:
     library_name = 'Central Library'
-    library = Library.objects.get(name=library_name)
+    library = Library.objects.get(name=library_name) 
     books = library.books.all() 
     print(f"Books in {library.name}: {[book.title for book in books]}")
 except Library.DoesNotExist:
