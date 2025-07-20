@@ -8,10 +8,9 @@ for book in books_in_library:
 
 author_name = "J.K. Rowling"
 author = Author.objects.get(name=author_name)
-books_by_author = Book.objects.filter(authors=author)
+books_by_author = author.books.all()
 for book in books_by_author:
     print(book.title)
 
 library = Library.objects.get(name=library_name)
-librarian = Librarian.objects.get(library=library)
-print(librarian.name)
+print(library.librarian.name)
