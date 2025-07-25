@@ -19,6 +19,12 @@ try:
     print(f"\nBooks by {author_name}:")
     for book in books_by_author:
         print(book.title)
+
+    filtered_books = Book.objects.filter(author=author)
+    print(f"\nFiltered books by {author_name}:")
+    for book in filtered_books:
+        print(book.title)
+
 except Author.DoesNotExist:
     print(f"Author '{author_name}' not found.")
 
