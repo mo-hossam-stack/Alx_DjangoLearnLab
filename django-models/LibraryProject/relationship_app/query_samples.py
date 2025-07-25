@@ -10,8 +10,14 @@ try:
     print(f"Books in {library_name}:")
     for book in books_in_library:
         print(book.title)
+
+    librarian = Librarian.objects.get(library=library)
+    print(f"Librarian retrieved using get(): {librarian.name}")
+
 except Library.DoesNotExist:
     print(f"Library '{library_name}' not found.")
+except Librarian.DoesNotExist:
+    print(f"No librarian assigned to '{library_name}'.")
 
 try:
     author = Author.objects.get(name=author_name)
