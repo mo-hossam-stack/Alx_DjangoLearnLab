@@ -1,10 +1,9 @@
 from django.views.generic.detail import DetailView
 from django.contrib.auth import login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
-from .models import Library, Book
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
-from .models import UserProfile, Author
+from .models import Library, Book, UserProfile, Author
 
 class LibraryDetailView(DetailView):
     model = Library
@@ -63,7 +62,30 @@ def add_book_view(request):
                 Book.objects.create(title=title, author=author, published_year=published_year)
                 return redirect('list_books')
             except Author.DoesNotExist:
-                pass 
+                pass
 
     authors = Author.objects.all()
     return render(request, 'relationship_app/add_book.html', {'authors': authors})
+
+@permission_required('relationship_app.can_change_book')
+@login_required
+def edit_book_view(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        published_year = request.POST.get('published_year')
+        if title and published_year:
+            book.title = title
+            book.published_year = published_year
+            book.save()
+            return redirect('list_books')
+    return render(request, 'relationship_app/edit_book.html', {'book': book})
+
+@permission_required('relationship_app.can_delete_book')
+@login_required
+def delete_book_view(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        book.delete()
+        return redirect('list_books')
+    return render(request, 'relationship_app/delete_book.html', {'book': book})
