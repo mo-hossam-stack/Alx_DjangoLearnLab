@@ -10,7 +10,8 @@ class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'publication_year')
     search_fields = ('title', 'author')
     list_filter = ('publication_year',)
-@admin.register(CustomUser)
+
+
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
     fieldsets = (
@@ -19,3 +20,5 @@ class CustomUserAdmin(UserAdmin):
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
+
+admin.site.register(CustomUser, CustomUserAdmin)
