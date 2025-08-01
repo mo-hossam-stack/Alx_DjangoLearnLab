@@ -1,41 +1,35 @@
-from relationship_app.models import Library, Book, Author, Librarian
-from django.core.exceptions import ObjectDoesNotExist
+from relationship_app.models import Author, Book, Library, Librarian
 
-library_name = "Central Library"
-author_name = "J.K. Rowling"
-
-try:
-    library = Library.objects.get(name=library_name)
-    books_in_library = library.books.all()
-    print(f"Books in {library_name}:")
-    for book in books_in_library:
-        print(book.title)
-
-    librarian = Librarian.objects.get(library=library)
-    print(f"Librarian retrieved using get(): {librarian.name}")
-
-except Library.DoesNotExist:
-    print(f"Library '{library_name}' not found.")
-except Librarian.DoesNotExist:
-    print(f"No librarian assigned to '{library_name}'.")
-
-try:
+# 1. Query all books by a specific author
+def books_by_author(author_name):
     author = Author.objects.get(name=author_name)
-    books_by_author = author.books.all()
-    print(f"\nBooks by {author_name}:")
-    for book in books_by_author:
-        print(book.title)
+    books = Book.objects.filter(author=author)
+    print(f"Books by {author_name}:")
+    for book in books:
+        print(f"- {book.title}")
 
-    filtered_books = Book.objects.filter(author=author)
-    print(f"\nFiltered books by {author_name}:")
-    for book in filtered_books:
-        print(book.title)
-
-except Author.DoesNotExist:
-    print(f"Author '{author_name}' not found.")
-
-try:
+# 2. List all books in a library
+def books_in_library(library_name):
     library = Library.objects.get(name=library_name)
-    print(f"\nLibrarian of {library_name}: {library.librarian.name}")
-except (Library.DoesNotExist, Librarian.DoesNotExist):
-    print(f"Librarian for '{library_name}' not found.")
+    books = library.books.all()
+    print(f"Books in the library {library_name}:")
+    for book in books:
+        print(f"- {book.title}")
+
+# 3. Retrieve the librarian for a library
+def librarian_for_library(library_name):
+    library = Library.objects.get(name=library_name)
+    librarian = Librarian.objects.get(library=library)
+    print(f"The librarian for {library_name} is {librarian.name}")
+
+# Test the queries
+if __name__ == "__main__":
+    # Query 1: Books by a specific author (change 'Author Name' to an existing author)
+    books_by_author('Author Name')
+
+    # Query 2: Books in a specific library (change 'Library Name' to an existing library)
+    books_in_library('Library Name')
+
+    # Query 3: Librarian for a specific library (change 'Library Name' to an existing library)
+    librarian_for_library('Library Name')
+    
